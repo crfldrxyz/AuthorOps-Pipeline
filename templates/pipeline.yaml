@@ -1,0 +1,40 @@
+id: pipeline-id
+version: 0.1.0
+status: experimental
+purpose: State the single production outcome this workflow exists to achieve.
+inputs:
+  - primary_input
+outputs:
+  - primary_output
+entry: intake
+terminal: finalize
+stages:
+  - id: intake
+    kind: transform
+    action: validate_input
+    outputs: [primary_input]
+  - id: work
+    kind: capability
+    capability: stable-capability-id
+    depends_on: [intake]
+    inputs: [primary_input]
+    outputs: [work_result]
+    failure: revise
+  - id: quality_gate
+    kind: gate
+    depends_on: [work]
+    criterion: explicit_acceptance_condition
+    on_fail: revise
+  - id: review
+    kind: human_review
+    depends_on: [quality_gate]
+    required: true
+    outputs: [approval]
+  - id: finalize
+    kind: terminal
+    depends_on: [review]
+    criterion: approval == approved
+revision:
+  target: work
+  max_attempts: 2
+  escalate_after: 2
