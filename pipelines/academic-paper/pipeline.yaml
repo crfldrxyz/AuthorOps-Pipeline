@@ -3,7 +3,7 @@ version: 0.1.0
 status: experimental
 purpose: Move a research paper from draft input through structural, argument, evidence, citation, and language review to submission-ready human approval.
 inputs: [manuscript, target_requirements]
-outputs: [submission_candidate, quality_report]
+outputs: [quality_report, approval]
 entry: intake
 terminal: finalize
 stages:
@@ -68,7 +68,7 @@ stages:
     kind: human_review
     depends_on: [submission_gate]
     required: true
-    outputs: [approval]
+    outputs: [approval, quality_report]
   - id: finalize
     kind: terminal
     depends_on: [review]
