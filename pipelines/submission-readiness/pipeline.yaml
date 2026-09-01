@@ -1,0 +1,49 @@
+id: submission-readiness
+version: 0.1.0
+status: experimental
+purpose: Audit an artifact against declared submission requirements and produce a decision-ready readiness report.
+inputs: [manuscript, submission_requirements]
+outputs: [readiness_report, submission_candidate]
+entry: intake
+terminal: finalize
+stages:
+  - id: intake
+    kind: transform
+    action: normalize_requirements
+    outputs: [manuscript, submission_requirements]
+  - id: content
+    kind: capability
+    capability: manuscript-readiness
+    depends_on: [intake]
+    outputs: [content_report]
+    failure: revise
+  - id: citations
+    kind: capability
+    capability: citation-integrity
+    depends_on: [intake]
+    outputs: [citation_report]
+    failure: revise
+  - id: format
+    kind: capability
+    capability: formatting-check
+    depends_on: [content, citations]
+    outputs: [format_report]
+    failure: revise
+  - id: compliance
+    kind: gate
+    depends_on: [content, citations, format]
+    criterion: all_mandatory_requirements_satisfied
+    on_fail: revise
+  - id: human_review
+    kind: human_review
+    depends_on: [compliance]
+    required: true
+    outputs: [approval]
+  - id: finalize
+    kind: terminal
+    depends_on: [human_review]
+    criterion: approval == approved
+revision:
+  target: format
+  max_attempts: 1
+  escalate_after: 1
