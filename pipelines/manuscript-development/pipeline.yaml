@@ -3,7 +3,7 @@ version: 0.1.0
 status: experimental
 purpose: Develop a long-form manuscript through architecture, argument, voice, consistency, line editing, and final review.
 inputs: [manuscript, author_intent]
-outputs: [developed_manuscript, editorial_report]
+outputs: [editorial_report, editor_decision]
 entry: intake
 terminal: finalize
 stages:
@@ -56,7 +56,7 @@ stages:
     kind: human_review
     depends_on: [quality_gate]
     required: true
-    outputs: [editor_decision]
+    outputs: [editor_decision, editorial_report]
   - id: finalize
     kind: terminal
     depends_on: [review]
