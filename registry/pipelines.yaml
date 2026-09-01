@@ -1,0 +1,27 @@
+schema_version: 1
+pipelines:
+  - id: document-review
+    version: 0.1.0
+    status: experimental
+    path: pipelines/document-review/pipeline.yaml
+    tags: [review, editing, quality]
+  - id: academic-paper
+    version: 0.1.0
+    status: experimental
+    path: pipelines/academic-paper/pipeline.yaml
+    tags: [academic, research, evidence, citation]
+  - id: manuscript-development
+    version: 0.1.0
+    status: experimental
+    path: pipelines/manuscript-development/pipeline.yaml
+    tags: [manuscript, authoring, editing]
+  - id: literature-review
+    version: 0.1.0
+    status: experimental
+    path: pipelines/literature-review/pipeline.yaml
+    tags: [research, literature, evidence]
+  - id: submission-readiness
+    version: 0.1.0
+    status: experimental
+    path: pipelines/submission-readiness/pipeline.yaml
+    tags: [publishing, compliance, review]
