@@ -1,0 +1,67 @@
+id: manuscript-development
+version: 0.1.0
+status: experimental
+purpose: Develop a long-form manuscript through architecture, argument, voice, consistency, line editing, and final review.
+inputs: [manuscript, author_intent]
+outputs: [developed_manuscript, editorial_report]
+entry: intake
+terminal: finalize
+stages:
+  - id: intake
+    kind: transform
+    action: establish_baseline
+    outputs: [manuscript, author_intent]
+  - id: architecture
+    kind: capability
+    capability: manuscript-structure
+    depends_on: [intake]
+    outputs: [architecture_report]
+    failure: revise
+  - id: argument
+    kind: capability
+    capability: argument-analysis
+    depends_on: [architecture]
+    outputs: [argument_report]
+    failure: revise
+  - id: voice
+    kind: capability
+    capability: voice-authenticity
+    depends_on: [argument]
+    outputs: [voice_report]
+    failure: revise
+  - id: consistency
+    kind: capability
+    capability: document-consistency
+    depends_on: [voice]
+    outputs: [consistency_report]
+    failure: revise
+  - id: line_edit
+    kind: capability
+    capability: line-editing
+    depends_on: [consistency]
+    outputs: [line_edit_report]
+    failure: revise
+  - id: proof
+    kind: capability
+    capability: proofreading
+    depends_on: [line_edit]
+    outputs: [proof_report]
+    failure: revise
+  - id: quality_gate
+    kind: gate
+    depends_on: [architecture, argument, voice, consistency, line_edit, proof]
+    criterion: no_unresolved_critical_findings
+    on_fail: revise
+  - id: review
+    kind: human_review
+    depends_on: [quality_gate]
+    required: true
+    outputs: [editor_decision]
+  - id: finalize
+    kind: terminal
+    depends_on: [review]
+    criterion: editor_decision == approved
+revision:
+  target: architecture
+  max_attempts: 2
+  escalate_after: 2
