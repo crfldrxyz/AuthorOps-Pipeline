@@ -3,7 +3,7 @@ version: 0.1.0
 status: experimental
 purpose: Produce a structured review of a substantive document and, when authorized, a revision-ready artifact.
 inputs: [document]
-outputs: [review_report, revised_document]
+outputs: [review_report, review_decision]
 entry: intake
 terminal: finalize
 stages:
@@ -41,7 +41,7 @@ stages:
     kind: human_review
     depends_on: [final_quality]
     required: true
-    outputs: [review_decision]
+    outputs: [review_decision, review_report]
   - id: finalize
     kind: terminal
     depends_on: [review]
