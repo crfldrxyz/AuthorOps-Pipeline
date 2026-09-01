@@ -1,0 +1,52 @@
+id: document-review
+version: 0.1.0
+status: experimental
+purpose: Produce a structured review of a substantive document and, when authorized, a revision-ready artifact.
+inputs: [document]
+outputs: [review_report, revised_document]
+entry: intake
+terminal: finalize
+stages:
+  - id: intake
+    kind: transform
+    action: normalize_input
+    outputs: [document]
+  - id: structure
+    kind: capability
+    capability: structure-check
+    depends_on: [intake]
+    inputs: [document]
+    outputs: [structure_report]
+    failure: revise
+  - id: clarity
+    kind: capability
+    capability: clarity-check
+    depends_on: [structure]
+    inputs: [document]
+    outputs: [clarity_report]
+    failure: revise
+  - id: mechanics
+    kind: capability
+    capability: proofreading
+    depends_on: [clarity]
+    inputs: [document]
+    outputs: [mechanical_report]
+    failure: revise
+  - id: final_quality
+    kind: gate
+    depends_on: [structure, clarity, mechanics]
+    criterion: no_unresolved_critical_findings
+    on_fail: revise
+  - id: review
+    kind: human_review
+    depends_on: [final_quality]
+    required: true
+    outputs: [review_decision]
+  - id: finalize
+    kind: terminal
+    depends_on: [review]
+    criterion: review_decision == approved
+revision:
+  target: clarity
+  max_attempts: 2
+  escalate_after: 2
