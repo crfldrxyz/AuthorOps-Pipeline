@@ -1,0 +1,61 @@
+id: literature-review
+version: 0.1.0
+status: experimental
+purpose: Convert a defined research question and source set into a traceable literature review with evidence synthesis and gap identification.
+inputs: [research_question, source_set]
+outputs: [literature_map, evidence_synthesis, gap_report]
+entry: intake
+terminal: finalize
+stages:
+  - id: intake
+    kind: transform
+    action: validate_source_set
+    outputs: [research_question, source_set]
+  - id: source_review
+    kind: capability
+    capability: source-evaluation
+    depends_on: [intake]
+    outputs: [source_assessments]
+    failure: revise
+  - id: extraction
+    kind: capability
+    capability: evidence-extraction
+    depends_on: [source_review]
+    outputs: [evidence_set]
+    failure: revise
+  - id: mapping
+    kind: capability
+    capability: source-claim-mapping
+    depends_on: [extraction]
+    outputs: [literature_map]
+    failure: revise
+  - id: synthesis
+    kind: capability
+    capability: evidence-synthesis
+    depends_on: [mapping]
+    outputs: [evidence_synthesis]
+    failure: revise
+  - id: gaps
+    kind: capability
+    capability: literature-gap
+    depends_on: [synthesis]
+    outputs: [gap_report]
+    failure: revise
+  - id: integrity_gate
+    kind: gate
+    depends_on: [source_review, extraction, mapping, synthesis, gaps]
+    criterion: every_material_claim_has_traceable_evidence_and_no_source_is_misrepresented
+    on_fail: revise
+  - id: review
+    kind: human_review
+    depends_on: [integrity_gate]
+    required: true
+    outputs: [review_decision]
+  - id: finalize
+    kind: terminal
+    depends_on: [review]
+    criterion: review_decision == approved
+revision:
+  target: synthesis
+  max_attempts: 2
+  escalate_after: 2
