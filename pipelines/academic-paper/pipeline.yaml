@@ -1,0 +1,79 @@
+id: academic-paper
+version: 0.1.0
+status: experimental
+purpose: Move a research paper from draft input through structural, argument, evidence, citation, and language review to submission-ready human approval.
+inputs: [manuscript, target_requirements]
+outputs: [submission_candidate, quality_report]
+entry: intake
+terminal: finalize
+stages:
+  - id: intake
+    kind: transform
+    action: validate_artifacts
+    outputs: [manuscript, target_requirements]
+  - id: structure
+    kind: capability
+    capability: paper-structure
+    depends_on: [intake]
+    outputs: [structure_report]
+    failure: revise
+  - id: argument
+    kind: capability
+    capability: argument-analysis
+    depends_on: [structure]
+    outputs: [argument_report]
+    failure: revise
+  - id: claims
+    kind: capability
+    capability: claim-audit
+    depends_on: [argument]
+    outputs: [claim_report]
+    failure: revise
+  - id: evidence
+    kind: capability
+    capability: evidence-audit
+    depends_on: [claims]
+    outputs: [evidence_report]
+    failure: revise
+  - id: citations
+    kind: capability
+    capability: citation-integrity
+    depends_on: [evidence]
+    outputs: [citation_report]
+    failure: revise
+  - id: methodology
+    kind: capability
+    capability: methodology-alignment
+    depends_on: [claims, evidence]
+    outputs: [methodology_report]
+    failure: revise
+  - id: language
+    kind: capability
+    capability: clarity-check
+    depends_on: [citations, methodology]
+    outputs: [clarity_report]
+    failure: revise
+  - id: mechanics
+    kind: capability
+    capability: proofreading
+    depends_on: [language]
+    outputs: [proof_report]
+    failure: revise
+  - id: submission_gate
+    kind: gate
+    depends_on: [structure, argument, claims, evidence, citations, methodology, language, mechanics]
+    criterion: no_unresolved_critical_findings_and_target_requirements_satisfied
+    on_fail: revise
+  - id: review
+    kind: human_review
+    depends_on: [submission_gate]
+    required: true
+    outputs: [approval]
+  - id: finalize
+    kind: terminal
+    depends_on: [review]
+    criterion: approval == approved
+revision:
+  target: claims
+  max_attempts: 2
+  escalate_after: 2
