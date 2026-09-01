@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AuthorOps-Pipeline</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin: 0 0 0.5rem 0;
+      color: var(--accent);
+    }
+    p.lead {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+    .card h2 {
+      margin-top: 0;
+      font-size: 1.3rem;
+      color: var(--accent);
+    }
+    .card ul {
+      padding-left: 1.2rem;
+      margin-bottom: 0;
+    }
+    .card li {
+      margin-bottom: 0.5rem;
+    }
+    code {
+      background: #090d16;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    footer {
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>AuthorOps-Pipeline</h1>
+      <p class="lead">Composable workflows for reliable AI-assisted production of manuscripts, papers, books, research, and serious knowledge work.</p>
+    </header>
+
+    <main>
+      <section>
+        <blockquote style="font-style: italic; border-left: 3px solid var(--accent); margin: 0 0 2rem 0; padding-left: 1rem; color: var(--text-muted);">
+          "Skills provide capabilities. Pipelines provide execution patterns."
+        </blockquote>
+      </section>
+
+      <div class="grid">
+        <div class="card">
+          <h2>Pipeline Registry</h2>
+          <ul>
+            <li><code>document-review</code> &mdash; Review document for structure, style, and evidence.</li>
+            <li><code>academic-paper</code> &mdash; Paper production with evidence, citation, and verification gates.</li>
+            <li><code>manuscript-development</code> &mdash; Iterative authoring and stage-by-stage revision.</li>
+            <li><code>literature-review</code> &mdash; Systematic literature search, extraction, and synthesis.</li>
+            <li><code>submission-readiness</code> &mdash; Publishing venue compliance and final checks.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Architecture & Principles</h2>
+          <ul>
+            <li><strong>Artifact-first:</strong> Transforms defined artifacts.</li>
+            <li><strong>Explicit stages:</strong> Inspectable execution order and inputs/outputs.</li>
+            <li><strong>Quality before completion:</strong> Mandatory quality gates.</li>
+            <li><strong>Human-controllable:</strong> First-class review & approval points.</li>
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>AuthorOps Pipeline Architecture v0.1.0 &bull; Released under MIT License</p>
+    </footer>
+  </div>
+</body>
+</html>
