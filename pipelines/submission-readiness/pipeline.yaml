@@ -3,7 +3,7 @@ version: 0.1.0
 status: experimental
 purpose: Audit an artifact against declared submission requirements and produce a decision-ready readiness report.
 inputs: [manuscript, submission_requirements]
-outputs: [readiness_report, submission_candidate]
+outputs: [readiness_report, approval]
 entry: intake
 terminal: finalize
 stages:
@@ -38,7 +38,7 @@ stages:
     kind: human_review
     depends_on: [compliance]
     required: true
-    outputs: [approval]
+    outputs: [approval, readiness_report]
   - id: finalize
     kind: terminal
     depends_on: [human_review]
